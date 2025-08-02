@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Builder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="logo pulse">PortfolioBuilder</div>
+      <div class="menu-toggle">☰</div>
+      <ul>
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#slider">Slider</a></li>
+        <li><a href="#templates">Templates</a></li>
+        <li><a href="#editor">Editor</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#subscribe">Subscribe</a></li>
+        <li><a href="#theme-editor">Theme</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Sections -->
+  <section id="home" class="active">
+    <div class="container flex-center" style="flex-direction: column; height: 400px;">
+      <h1 class="animate-fade-in-up">Добро пожаловать в Portfolio Builder</h1>
+      <p class="animate-fade-in-up">Создавайте профессиональные портфолио мгновенно.</p>
+      <button class="btn btn-primary animate-fade-in-up" data-scroll="templates">Начать сейчас</button>
+    </div>
+  </section>
+
+  <section id="slider">
+    <div class="container slider">
+      <div class="slides">
+        <div class="slide"><img src="https://via.placeholder.com/1200x400?text=Featured+1" alt="Slide 1"/></div>
+        <div class="slide"><img src="https://via.placeholder.com/1200x400?text=Featured+2" alt="Slide 2"/></div>
+        <div class="slide"><img src="https://via.placeholder.com/1200x400?text=Featured+3" alt="Slide 3"/></div>
+      </div>
+      <div class="slider-nav">
+        <button id="prevSlide">❮</button><button id="nextSlide">❯</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="templates">
+    <div class="container">
+      <h2 class="section-title">Галерея шаблонов</h2>
+      <div class="filter">
+        <select id="profFilter">
+          <option value="all">Все</option>
+          <option value="designer">Дизайнер</option>
+          <option value="developer">Разработчик</option>
+          <option value="videomaker">Видеомейкер</option>
+          <option value="universal">Универсальные</option>
+        </select>
+      </div>
+      <div id="templateGrid" class="grid"></div>
+    </div>
+  </section>
+
+  <section id="editor">
+    <div class="container">
+      <h2 class="section-title">Редактор портфолио</h2>
+      <div class="flex">
+        <div class="toolbox">
+          <h3>Доступные блоки</h3>
+          <div class="block" draggable="true" data-type="text">Текст</div>
+          <div class="block" draggable="true" data-type="image">Изображение</div>
+          <div class="block" draggable="true" data-type="video">Видео</div>
+        </div>
+        <div id="canvas" class="canvas">
+          <div class="empty">Перетащите сюда блок</div>
+        </div>
+      </div>
+      <button id="saveBtn" class="btn btn-primary" style="margin-top: var(--space-lg);">Сохранить</button>
+    </div>
+  </section>
+
+  <section id="dashboard">
+    <div class="container">
+      <h2 class="section-title">Мои портфолио</h2>
+      <ul id="portfolioList"></ul>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Контактная форма</h2>
+      <form id="contactForm">
+        <label for="contactName">Имя</label><input id="contactName" type="text" required />
+        <label for="contactEmail">Email</label><input id="contactEmail" type="email" required />
+        <label for="contactMessage">Сообщение</label><textarea id="contactMessage" rows="4" required></textarea>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="subscribe">
+    <div class="container">
+      <h2 class="section-title">Подписка</h2>
+      <div id="subscribeWidget" class="flex-center" style="gap: var(--space-sm);">
+        <input id="subscribeEmail" type="email" placeholder="Ваш Email" />
+        <button id="subscribeBtn" class="btn btn-primary">Подписаться</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="theme-editor">
+    <div class="container">
+      <h2 class="section-title">Настройка темы</h2>
+      <form id="themeForm">
+        <label for="primaryColor">Цвет акцента</label><input id="primaryColor" type="color" value="#00E5FF" />
+        <label for="secondaryColor">Цвет ошибок</label><input id="secondaryColor" type="color" value="#FF4D4F" />
+        <label for="fontSelect">Шрифт</label>
+        <select id="fontSelect">
+          <option value="Segoe UI">Segoe UI</option>
+          <option value="Arial">Arial</option>
+          <option value="Courier New">Courier New</option>
+        </select>
+        <button type="submit" class="btn btn-primary" style="margin-top: var(--space-md);">Применить тему</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">×</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
