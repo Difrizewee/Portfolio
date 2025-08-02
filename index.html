@@ -18,10 +18,11 @@
     }
     *{box-sizing:border-box;}
     html {scroll-behavior: smooth;}
-    body {margin:0;background:var(--bg);font-family: var(--font-stack);color: var(--text);-webkit-font-smoothing:antialiased;line-height:1.45;}
+    body {margin:0;background:var(--bg);font-family: var(--font-stack);color: var(--text);-webkit-font-smoothing:antialiased;line-height:1.45;transition:background .3s,var(--transition);}
     a{color:var(--primary);text-decoration:none;}
     img{max-width:100%;display:block;border-radius:6px;}
     button{cursor:pointer;border:none;background:none;font:inherit;position:relative;overflow:hidden;}
+    button:focus{outline:2px solid rgba(37,99,235,.6);outline-offset:2px;}
     .container{max-width:1120px;margin:0 auto;padding:0 16px;}
     .flex{display:flex;}
     .space-between{justify-content:space-between;}
@@ -62,18 +63,18 @@
     .footer-col{flex:1;min-width:160px;}
     .indicator{position:fixed;top:14px;right:14px;background:rgba(37,99,235,.9);color:#fff;padding:10px 16px;border-radius:999px;font-size:.75rem;display:flex;align-items:center;gap:6px;box-shadow:0 30px 60px -10px rgba(31,45,58,.25);opacity:0;transform:translateY(-6px);transition:all .3s;}
     .show{opacity:1;transform:translateY(0);}
-    .template-variant-classic{--template-bg:#fff;--template-radius:10px;}
-    .template-variant-minimal{--template-bg:transparent;--template-radius:0;}
+    .template-variant-classic .section{border-left:4px solid var(--primary);}
+    .template-variant-minimal{--card-bg:transparent;}
+    .template-variant-minimal .card{box-shadow:none;border:1px solid rgba(0,0,0,.05);}
     .template-variant-showcase .project-card{border:2px solid var(--primary);}
     .template-label{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.95);padding:4px 10px;border-radius:6px;font-size:.55rem;font-weight:600;box-shadow:0 10px 30px -5px rgba(31,45,58,.1);}
     .smooth{transition:all .35s var(--transition);}
     .hover-lift{transition:transform .3s;will-change:transform;}
     .hover-lift:hover{transform:translateY(-2px);}
-    .theme-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-    .thumbnail{border-radius:6px;overflow:hidden;background:#f0f4f9;min-height:100px;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#556678;}
     .flex-wrap{display:flex;flex-wrap:wrap;gap:10px;}
     .link-style{color:var(--primary);}
     .photo-thumb{width:100%;border-radius:6px;margin-top:6px;}
+    /* Hide selection outlines in read-only view if needed */
   </style>
 </head>
 <body>
@@ -179,7 +180,7 @@
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
       <div>
         <h2>Шаблоны</h2>
-        <p class="small">Выбери стиль, который тебе подходит — кардинально отличающиеся по верстке и акцентам.</p>
+        <p class="small">Выбери стиль — кардинально отличающийся по визуальному и структуре.</p>
       </div>
       <div class="template-filter">
         <button data-filter="all" class="active" onclick="filterTemplates('all')">Все</button>
@@ -193,7 +194,7 @@
       <div class="template-card card" data-type="classic" id="tpl-classic" onclick="selectTemplate('classic')" style="flex:1;min-width:260px;max-width:320px;">
         <div class="template-label">Classic</div>
         <div style="margin-bottom:8px;font-weight:600;">Традиционное резюме</div>
-        <div class="small">Четкая структура, акцент на текст и контакты.</div>
+        <div class="small">Четкая структура, акцент на тексте и контактах.</div>
         <div style="margin-top:10px;">
           <button class="btn-secondary" onclick="event.stopPropagation(); selectTemplate('classic'); createDraft();">Выбрать</button>
         </div>
@@ -222,14 +223,13 @@
   <!-- Editor -->
   <div class="container" style="margin-top:50px;">
     <div class="editor" aria-label="Редактор портфолио">
-      <!-- левая -->
+      <!-- левая панель -->
       <div class="panel" style="flex:1;">
         <div class="small" style="margin-bottom:8px;font-weight:600;">Редактор</div>
         <div class="flex" style="gap:8px;flex-wrap:wrap;">
           <button class="btn-secondary" onclick="undo()">↺ Undo</button>
           <button class="btn-secondary" onclick="redo()">↻ Redo</button>
         </div>
-
         <div style="margin-top:16px;">
           <div class="small">Шаблон</div>
           <div class="flex-wrap" style="margin-top:6px;">
@@ -238,7 +238,6 @@
             <div class="btn-secondary" onclick="selectTemplate('showcase')" style="font-size:.75rem;">Showcase</div>
           </div>
         </div>
-
         <div style="margin-top:16px;">
           <div class="small">Цвета</div>
           <div class="color-row">
@@ -256,7 +255,6 @@
             </div>
           </div>
         </div>
-
         <div style="margin-top:16px;">
           <div class="small">SEO</div>
           <div style="margin-top:4px;">
@@ -266,7 +264,6 @@
             <textarea id="seoDesc" rows="2" placeholder="Описание" style="width:100%;padding:8px;border:1px solid #d4d9e2;border-radius:6px;"></textarea>
           </div>
         </div>
-
         <div style="margin-top:16px;">
           <div class="small">Шаринг</div>
           <div class="share-box">
@@ -275,7 +272,6 @@
           </div>
           <div class="small">Ссылка отражает текущее состояние. Открытие показывает как посетитель.</div>
         </div>
-
         <div style="margin-top:16px;">
           <div class="small">Экспорт</div>
           <button class="btn-secondary" onclick="downloadStatic()">Скачать index.html</button>
@@ -288,7 +284,7 @@
         <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px;">
           <div style="flex:1;min-width:220px;">
             <div contenteditable="true" class="inline-edit" id="title" style="font-size:1.9rem;font-weight:700;">Имя Фамилия</div>
-            <div contenteditable="true" class="inline-edit small" id="subtitle" style="margin-top:4px;">Frontend-инженер, создаю интерфейсы</div>
+            <div contenteditable="true" class="inline-edit small" id="subtitle" style="margin-top:4px;">Frontend-инженер</div>
           </div>
         </div>
 
@@ -358,15 +354,15 @@
 
         <div style="margin-top:14px;">
           <button class="btn-secondary" onclick="addSection()">+ Добавить секцию</button>
-          <div class="small" style="margin-top:4px;">Перетаскивай секции (в будущем), дублируй, удаляй.</div>
+          <div class="small" style="margin-top:4px;">Можно дублировать, удалять. (Drag & drop в будущем можно расширить.)</div>
         </div>
       </div>
 
-      <!-- правая -->
+      <!-- правая панель -->
       <div class="panel" style="flex:1;">
         <div class="small" style="margin-bottom:6px;font-weight:600;">Настройки</div>
         <div style="margin-top:10px;">
-          <div class="small">Предварительный просмотр</div>
+          <div class="small">Предпросмотр</div>
           <div class="flex" style="gap:8px;margin-top:6px;">
             <div class="card" style="flex:1;display:flex;align-items:center;justify-content:center;font-size:.9rem;">Мобильный</div>
             <div class="card" style="flex:1;display:flex;align-items:center;justify-content:center;font-size:.9rem;">Десктоп</div>
@@ -420,7 +416,7 @@
           <li>Inline-редактирование</li>
           <li>Изменение цветов</li>
           <li>Фото и ссылки</li>
-          <li>Шаблоны с разным дизайном</li>
+          <li>Кардинально разные шаблоны</li>
           <li>Публичная ссылка</li>
           <li>Экспорт в index.html</li>
         </ul>
@@ -459,7 +455,7 @@
     </div>
   </div>
 
-  <!-- утилиты сжатия (простая) -->
+  <!-- компрессия состояния -->
   <script>
     const LZString = {
       compressToEncodedURIComponent: input => encodeURIComponent(btoa(unescape(encodeURIComponent(input)))),
@@ -486,7 +482,7 @@
       }
     };
     let history = [], ptr = -1;
-    const MAX_HISTORY = 30;
+    const MAX_HISTORY = 40;
     let saveTimer = null;
 
     // Elements
@@ -506,6 +502,7 @@
     const textColorInput = document.getElementById('textColor');
     const footerYear = document.getElementById('footerYear');
 
+    // Init
     function init(){
       footerYear.textContent = new Date().getFullYear();
       bindEditable([titleEl, subtitleEl, aboutEl]);
@@ -542,12 +539,12 @@
         render();
         updateShareLink();
         showSaved();
-      }, 300);
+      }, 250);
     }
 
     function showSaved(){
       indicator.classList.add('show');
-      setTimeout(()=>indicator.classList.remove('show'), 1100);
+      setTimeout(()=>indicator.classList.remove('show'), 1000);
     }
 
     function applyFromDOM(){
@@ -560,8 +557,8 @@
         const name = card.querySelector('.proj-name')?.textContent.trim() || '';
         const desc = card.querySelector('.proj-desc')?.textContent.trim() || '';
         const link = card.querySelector('.proj-link')?.textContent.trim() || '';
-        const imageEl = card.querySelector('.proj-img');
-        const image = imageEl ? imageEl.getAttribute('data-src') || '' : '';
+        const imgEl = card.querySelector('.proj-img');
+        const image = imgEl ? imgEl.getAttribute('data-src') || imgEl.src : '';
         return { name, desc, link, image };
       });
       // contacts
@@ -582,8 +579,8 @@
       ptr = history.length -1;
     }
 
-    function undo(){ if(ptr >0){ ptr--; state = JSON.parse(history[ptr]); render(); persist(); updateShareLink(); } }
-    function redo(){ if(ptr < history.length-1){ ptr++; state = JSON.parse(history[ptr]); render(); persist(); updateShareLink(); } }
+    function undo(){ if(ptr > 0){ ptr--; state = JSON.parse(history[ptr]); render(); persist(); updateShareLink(); } }
+    function redo(){ if(ptr < history.length -1){ ptr++; state = JSON.parse(history[ptr]); render(); persist(); updateShareLink(); } }
 
     function persist(){
       try{ localStorage.setItem('instant_portfolio_draft', JSON.stringify(state)); }catch{}
@@ -642,18 +639,19 @@
         const card = document.createElement('div');
         card.className = 'project-card';
         card.innerHTML = `
-          <div contenteditable="true" class="proj-name" style="font-weight:600;">${escape(p.name)}</div>
-          <div contenteditable="true" class="proj-desc small" style="margin-top:4px;">${escape(p.desc)}</div>
-          <div contenteditable="true" class="proj-link link-style" style="margin-top:4px;">${escape(p.link)}</div>
+          <div contenteditable="true" class="proj-name" style="font-weight:600;">${escapeHtml(p.name)}</div>
+          <div contenteditable="true" class="proj-desc small" style="margin-top:4px;">${escapeHtml(p.desc)}</div>
+          <div contenteditable="true" class="proj-link link-style" style="margin-top:4px;">${escapeHtml(p.link)}</div>
           <div style="margin-top:8px;">
             <label style="font-size:.7rem;">Фото: <input type="file" accept="image/*" onchange="handleProjectImage(event, ${i})" /></label>
-            ${p.image ? `<div class="photo-thumb-wrapper"><img class="proj-img photo-thumb" data-src="${escape(p.image)}" src="${escape(p.image)}" alt="Фото проекта" /></div>` : '<div class="photo-thumb-wrapper"></div>'}
+            <div class="photo-thumb-wrapper">
+              ${p.image ? `<img class="proj-img photo-thumb" data-src="${escapeHtml(p.image)}" src="${escapeHtml(p.image)}" alt="Фото проекта" />` : ''}
+            </div>
           </div>
           <div style="margin-top:10px;display:flex;gap:8px;">
             <button class="btn-secondary" onclick="removeProject(${i})">Удалить</button>
           </div>
         `;
-        // bind
         card.querySelectorAll('[contenteditable]').forEach(el=>{
           el.addEventListener('input', scheduleSave);
           el.addEventListener('blur', applyFromDOM);
@@ -680,6 +678,7 @@
       persist();
       updateShareLink();
     }
+
     function removeProject(i){
       state.content.projects.splice(i,1);
       pushHistory();
@@ -701,7 +700,6 @@
         if(state.template === t) el.classList.add('selected');
         else el.classList.remove('selected');
       });
-      // apply variant classes to body for visual differences
       document.body.classList.remove('template-variant-classic','template-variant-minimal','template-variant-showcase');
       if(state.template==='classic') document.body.classList.add('template-variant-classic');
       if(state.template==='minimal') document.body.classList.add('template-variant-minimal');
@@ -741,7 +739,7 @@
     }
 
     function generateStaticHTML(){
-      const safe = str => str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+      const safe = str => (str||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
       const title = safe(state.content.title);
       const subtitle = safe(state.content.subtitle);
       const about = safe(state.content.about);
@@ -826,7 +824,9 @@
       `;
     }
 
-    function escape(str){ return (str||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function escapeHtml(str){
+      return (str||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
 
     function filterTemplates(type){
       document.querySelectorAll('.template-filter button').forEach(b=>b.classList.remove('active'));
@@ -837,16 +837,65 @@
       });
     }
 
-    // init load
+    // секции (упрощённо: дублирование и удаление)
+    function addSection(){
+      const key = prompt('Введите уникальное название секции (например "skills")')?.trim();
+      if(!key) return;
+      if(document.querySelector(`.section[data-key="${key}"]`)){
+        alert('Секция с таким ключом уже есть');
+        return;
+      }
+      const wrapper = document.getElementById('sectionsWrapper');
+      const newSection = document.createElement('div');
+      newSection.className = 'section';
+      newSection.setAttribute('data-key', key);
+      newSection.innerHTML = `
+        <div class="section-header">
+          <div>
+            <div style="font-weight:600;">${key}</div>
+            <div class="small">Новая секция</div>
+          </div>
+          <div class="section-controls">
+            <button onclick="removeSection('${key}')">Удалить</button>
+            <button onclick="duplicateSection('${key}')">Дублировать</button>
+          </div>
+        </div>
+        <div contenteditable="true" class="inline-edit" style="padding:12px;border:1px solid #d4d9e2;border-radius:8px;">Содержимое секции ${key}</div>
+      `;
+      wrapper.appendChild(newSection);
+      scheduleSave();
+    }
+
+    function removeSection(key){
+      if(!confirm('Удалить секцию?')) return;
+      const el = document.querySelector(`.section[data-key="${key}"]`);
+      if(el) el.remove();
+      scheduleSave();
+    }
+
+    function duplicateSection(key){
+      const src = document.querySelector(`.section[data-key="${key}"]`);
+      if(!src) return;
+      const clone = src.cloneNode(true);
+      const newKey = key + '_copy_' + Math.floor(Math.random()*100);
+      clone.setAttribute('data-key', newKey);
+      clone.querySelector('div[style*="font-weight:600;"]').textContent = newKey;
+      document.getElementById('sectionsWrapper').appendChild(clone);
+      // bind events on new editable area
+      clone.querySelectorAll('[contenteditable]').forEach(el=>{
+        el.addEventListener('input', scheduleSave);
+        el.addEventListener('blur', applyFromDOM);
+      });
+      scheduleSave();
+    }
+
+    // bootstrap
     window.addEventListener('load', init);
     window.addEventListener('hashchange', ()=>{
       loadState();
       render();
       updateShareLink();
     });
-
-    // helpers
-    function show(selector){ return document.querySelector(selector); }
   </script>
 </body>
 </html>
