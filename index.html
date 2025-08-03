@@ -7,908 +7,1073 @@
   <meta name="description" content="Портфолио, которое говорит за тебя. Мгновенно. Без регистрации, без подписок." />
   <style>
     :root {
-      --bg: #f5f7fa;
-      --card-bg: #ffffff;
-      --primary: #2563eb;
-      --text: #1f2d3a;
-      --radius: 10px;
-      --shadow: 0 20px 40px -10px rgba(31,45,58,.08);
-      --transition: .3s cubic-bezier(.4,.2,.2,1);
-      --font-stack: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-      --max-width: 1120px;
+      --bg:#f5f7fa;
+      --card:#fff;
+      --radius:10px;
+      --shadow:0 20px 40px -10px rgba(31,45,58,.08);
+      --transition:.35s cubic-bezier(.4,.2,.2,1);
+      --primary:#2563eb;
+      --radius-sm:6px;
+      --text:#1f2d3a;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      color: var(--text);
+      line-height:1.45;
     }
     *{box-sizing:border-box;}
-    html{scroll-behavior:smooth;}
-    body{
-      margin:0;
-      background: var(--bg);
-      font-family: var(--font-stack);
-      color: var(--text);
-      -webkit-font-smoothing:antialiased;
-      line-height:1.4;
-      transition: background .3s,var(--transition);
-    }
-    a{color:var(--primary);text-decoration:none;}
-    img{max-width:100%;display:block;border-radius:6px;}
-    button{cursor:pointer;border:none;background:none;font:inherit;position:relative;overflow:hidden;padding:0;}
-    button:focus{outline:2px solid rgba(37,99,235,.6);outline-offset:2px;}
-    .container{max-width:var(--max-width);margin:0 auto;padding:0 16px;}
+    body{margin:0;background:var(--bg);min-height:100%;-webkit-font-smoothing:antialiased;}
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;}
+    button{cursor:pointer;border:none;background:none;font:inherit;}
+    .container{max-width:1200px;margin:0 auto;padding:0 1rem;}
     .flex{display:flex;}
+    .center{align-items:center;display:flex;}
     .space-between{justify-content:space-between;}
-    .center{display:flex;align-items:center;}
     .gap{gap:1rem;}
-    h1{margin:0;font-size:2.2rem;font-weight:700;}
-    h2{margin:0;font-size:1.4rem;font-weight:600;}
+    h1{margin:0;font-size:2.5rem;font-weight:700;line-height:1.1;}
+    h2{margin:0;font-size:1.25rem;font-weight:600;}
     p{margin:0 0 1em;font-size:1rem;}
-    .small{font-size:.85rem;color:#556678;margin:0;}
-    .btn-primary{
-      background:var(--primary);
-      color:#fff;
-      padding:.65rem 1.2rem;
-      border-radius:8px;
-      font-weight:600;
-      display:inline-flex;
-      align-items:center;
-      gap:.3rem;
-      transition:var(--transition);
-      border:0;
-    }
+    .btn-primary{background:var(--primary);color:#fff;padding:.75rem 1.5rem;border-radius:8px;font-weight:600;display:inline-flex;align-items:center;gap:.5rem;transition:var(--transition);}
     .btn-primary:hover{filter:brightness(1.05);}
-    .btn-secondary{
-      padding:.55rem 1rem;
-      border-radius:8px;
-      border:1px solid rgba(37,99,235,.5);
-      font-weight:600;
-      display:inline-flex;
-      align-items:center;
-      gap:.3rem;
-      transition:var(--transition);
-      background:#fff;
-    }
-    .btn-secondary:hover{background:rgba(37,99,235,.05);}
-    .card{
-      background:var(--card-bg);
-      border-radius:var(--radius);
-      padding:1rem 1.25rem;
-      position:relative;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      transition:transform .35s,var(--transition);
-    }
-    .card:hover{transform:translateY(-2px);}
-    .inline-edit{
-      outline:2px dashed transparent;
-      transition:var(--transition);
-      min-height:1.2em;
-      display:inline-block;
-      width:100%;
-    }
-    .inline-edit:focus{
-      outline:2px dashed var(--primary);
-      background:rgba(37,99,235,.04);
-    }
-    .template-filter{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:8px;}
-    .template-filter button{
-      padding:.5rem 1rem;
-      border-radius:999px;
-      border:1px solid #d4d9e2;
-      background:#fff;
-      font-size:.75rem;
-      font-weight:600;
-      transition:var(--transition);
-    }
-    .template-filter button.active{
-      background:var(--primary);
-      color:#fff;
-      border-color:var(--primary);
-    }
-    .template-card{
-      position:relative;
-      overflow:hidden;
-      border-radius:12px;
-      cursor:pointer;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      min-height:160px;
-      transition:all .3s;
-      border:2px solid transparent;
-      padding:14px;
-      flex:1;
-      min-width:260px;
-      background: #fff;
-    }
-    .template-card.selected{border-color:var(--primary);}
-    .badge{
-      background:var(--primary);
-      color:#fff;
-      padding:6px 14px;
-      border-radius:999px;
-      font-size:.65rem;
-      display:inline-block;
-      margin-bottom:6px;
-    }
-    .project-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:14px;
-      margin-top:10px;
-    }
-    .project-card{
-      background:var(--card-bg);
-      border-radius:10px;
-      position:relative;
-      padding:12px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      box-shadow:0 18px 45px -8px rgba(31,45,58,.08);
-    }
-    .color-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;}
-    .color-box{display:flex;flex-direction:column;gap:4px;}
-    .footer{margin-top:60px;padding:50px 0;font-size:.8rem;color:#556678;}
+    .btn-secondary{padding:.65rem 1.2rem;border-radius:8px;border:1px solid #d4d9e2;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;transition:var(--transition);}
+    .shadow{box-shadow:var(--shadow);}
+    .card{background:var(--card);border-radius:var(--radius);padding:1.25rem;position:relative;overflow:hidden;transition:var(--transition);}
+    .card:hover{transform:translateY(-4px);box-shadow:0 30px 50px -10px rgba(31,45,58,.13);}
+    .pill{background:#eef2f7;border-radius:999px;padding:4px 12px;font-size:.625rem;display:inline-block;margin-right:6px;}
+    .badge{background:rgba(37,99,235,.08);color:var(--primary);padding:6px 14px;border-radius:999px;font-size:.65rem;font-weight:600;display:inline-block;margin-bottom:6px;}
+    .inline-edit{outline:2px dashed transparent;transition:var(--transition);}
+    .inline-edit:focus{outline:2px dashed var(--primary);background:rgba(37,99,235,.03);}
+    .small{font-size:.85rem;color:#556678;}
+    .template-filter{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+    .template-filter button{padding:.45rem .9rem;border-radius:999px;border:1px solid #d4d9e2;background:#fff;font-size:.75rem;transition:var(--transition);}
+    .template-filter button.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+    .badge-template{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.9);padding:4px 10px;border-radius:6px;font-size:.6rem;font-weight:600;box-shadow:0 10px 30px -5px rgba(31,45,58,.1);}
+    .nav{display:flex;gap:1rem;flex-wrap:wrap;font-size:.9rem;margin-top:4px;}
+    .pill-small{background:#eff3f9;border-radius:999px;padding:5px 12px;font-size:.6rem;margin-right:5px;}
+    .editor{display:grid;grid-template-columns:1fr 2fr 1fr;gap:20px;margin-top:40px;}
+    .panel{background:#fff;border-radius:12px;padding:15px;position:sticky;top:80px;max-height:calc(100vh - 120px);overflow:auto;}
+    .panel h3{margin-top:0;font-size:1rem;text-transform:uppercase;letter-spacing:1px;color:#556678;margin-bottom:8px;}
+    .template-card{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:180px;}
+    .template-thumb{background:#f0f4f9;border-radius:10px;padding:12px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px;}
+    .tag{background:#e7ecf9;border-radius:6px;padding:4px 10px;font-size:.55rem;display:inline-block;margin-right:4px;margin-bottom:4px;}
+    .pill-small.selected{background:var(--primary);color:#fff;}
+    .stepper{display:flex;gap:12px;flex-wrap:wrap;margin:2rem 0;}
+    .step{flex:1;min-width:180px;display:flex;gap:12px;align-items:flex-start;}
+    .step .circle{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;margin-right:8px;flex-shrink:0;}
+    .case{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px;margin-top:10px;}
+    .case-card{background:var(--card);border-radius:10px;overflow:hidden;position:relative;display:flex;flex-direction:column;}
+    .case-thumbnail{height:140px;background:#eef3fb;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#556678;position:relative;}
+    .footer{margin-top:60px;padding:40px 0;font-size:.8rem;color:#556678;}
     .footer .row{display:flex;flex-wrap:wrap;gap:30px;}
-    .footer-col{flex:1;min-width:160px;}
-    .indicator{
-      position:fixed;
-      top:14px;
-      right:14px;
-      background:rgba(37,99,235,.9);
-      color:#fff;
-      padding:10px 16px;
-      border-radius:999px;
-      font-size:.75rem;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      box-shadow:0 30px 60px -10px rgba(31,45,58,.25);
-      opacity:0;
-      transform:translateY(-6px);
-      transition:all .3s;
-      z-index:100;
-    }
-    .show{opacity:1;transform:translateY(0);}
-    .template-variant-classic .section{border-left:4px solid var(--primary);}
-    .template-variant-minimal{--card-bg:transparent;}
-    .template-variant-minimal .card{box-shadow:none;border:1px solid rgba(0,0,0,.05);}
-    .template-variant-showcase .project-card{border:2px solid var(--primary);}
-    .template-label{
-      position:absolute;
-      top:10px;
-      left:10px;
-      background:rgba(255,255,255,.95);
-      padding:4px 10px;
-      border-radius:6px;
-      font-size:.55rem;
-      font-weight:600;
-      box-shadow:0 10px 30px -5px rgba(31,45,58,.1);
-    }
-    .preview-toggle{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
-    .preview-button{
-      padding:6px 16px;
-      border-radius:8px;
-      border:1px solid #d4d9e2;
-      background:#fff;
-      font-size:.85rem;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      transition:var(--transition);
-      font-weight:600;
-    }
-    .preview-button.active{
-      background:var(--primary);
-      color:#fff;
-      border-color:var(--primary);
-    }
-    .share-box{display:flex;gap:8px;flex-wrap:wrap;}
-    @media (max-width: 1120px){
-      .editor{display:block;}
+    .footer-col{flex:1;min-width:180px;}
+    .pill-sm{background:#f0f4f9;border-radius:999px;padding:5px 10px;font-size:.65rem;display:inline-block;margin-bottom:6px;}
+    .link{color:#2563eb;}
+    .share-box{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+    .code{background:#f5f8fc;border-radius:6px;padding:6px 10px;font-family:monospace;font-size:.7rem;overflow-x:auto;display:inline-block;}
+    .toggle{display:inline-flex;align-items:center;gap:6px;border:1px solid #d4d9e2;padding:6px 12px;border-radius:999px;font-size:.75rem;}
+    .pill-tag{background:rgba(37,99,235,.1);color:var(--primary);padding:6px 12px;border-radius:999px;font-size:.6rem;display:inline-block;margin-right:4px;}
+    .badge-live{position:absolute;top:10px;right:10px;background:#22c55e;color:#fff;padding:6px 12px;border-radius:999px;font-size:.55rem;font-weight:600;}
+    .micro{font-size:.75rem;color:#556678;margin-top:4px;}
+    .template-selected{outline:3px solid var(--primary);}
+    @media (max-width: 1024px){
+      .editor{grid-template-columns:1fr; }
       .panel{position:relative;top:0;max-height:none;margin-bottom:20px;}
-      h1{font-size:2rem;}
     }
-    .section{margin-bottom:18px;}
-    .section-header{gap:8px;}
+    .tooltip{position:relative;cursor:help;}
+    .tooltip:hover .tip{visibility:visible;opacity:1;}
+    .tip{position:absolute;bottom:125%;left:50%;transform:translateX(-50%);background:#1f2d3a;color:#fff;padding:8px 12px;border-radius:6px;font-size:.65rem;white-space:nowrap;visibility:hidden;opacity:0;transition:opacity .2s;z-index:10;}
+    .pill-small[data-active="true"]{background:var(--primary);color:#fff;}
     .flex-wrap{display:flex;flex-wrap:wrap;gap:8px;}
-    .inline-input{width:100%;padding:8px;border:1px solid #d4d9e2;border-radius:6px;font-size:.85rem;}
+    .divider{height:1px;background:#e6e9f2;margin:30px 0;}
+    .light{background:#fff;}
+    .code-block{background:#f1f5fb;border-radius:8px;padding:12px;font-family:monospace;overflow-x:auto;}
+    .badge-new{background:#ffb703;color:#1f2d3a;padding:5px 12px;border-radius:999px;font-size:.55rem;margin-right:6px;display:inline-block;}
+    .inline-small{font-size:.85rem;background:#f9fbfe;padding:4px 8px;border-radius:5px;margin-right:4px;}
   </style>
 </head>
 <body>
 
-  <div id="savedIndicator" class="indicator">Сохранено ✓</div>
-
-  <!-- HEADER -->
-  <header class="container" style="padding:20px 0;">
-    <div class="flex space-between" style="flex-wrap:wrap;gap:12px;">
-      <div class="center" style="gap:12px;flex-wrap:wrap;">
+  <!-- HEADER / HERO -->
+  <header class="container" style="padding:30px 0;">
+    <div class="flex space-between" style="flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:16px;">
         <div style="font-weight:700;font-size:1.1rem;">InstantPortfolio</div>
         <div class="small">Без регистрации. Без подписок. Ссылка готова сразу.</div>
       </div>
       <div class="flex gap" style="flex-wrap:wrap;">
         <button class="btn-secondary" onclick="scrollToGallery()">Посмотреть примеры</button>
-        <button class="btn-primary" onclick="createDraft()">Создать портфолио</button>
+        <button class="btn-primary" id="startBtn" onclick="createDraft()">Создать портфолио</button>
       </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="container" style="margin-top:8px;">
+  <section class="container" style="margin-top:10px;">
     <div class="flex" style="gap:40px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:260px;">
+      <div style="flex:1;min-width:300px;">
         <h1>Портфолио, которое говорит за тебя. Мгновенно.</h1>
-        <p>Выбери шаблон, настрой цвета, добавь фото и ссылки — поделись. Никаких форм, никаких обязательств.</p>
-        <div class="flex gap" style="margin-top:14px;flex-wrap:wrap;">
+        <p>Выбери шаблон, настрой — поделись. Никаких форм, никаких обязательств.</p>
+        <div class="flex gap" style="margin-top:16px;">
           <button class="btn-primary" onclick="createDraft()">Начать сейчас</button>
-          <button class="btn-secondary" onclick="scrollToGallery()">Шаблоны</button>
+          <button class="btn-secondary" onclick="scrollToGallery()">Посмотреть примеры</button>
         </div>
-        <div class="small" style="margin-top:10px;">Гостевой драфт сохраняется локально. Ссылка содержит всё состояние.</div>
+        <p class="small" style="margin-top:12px;">Мгновенное гостевое драфт-портфолио. Сохраняется локально. Публикуется одной ссылкой.</p>
       </div>
-      <div style="flex:1;min-width:260px;">
-        <div class="card">
-          <div class="flex" style="gap:12px;flex-wrap:wrap;">
-            <div style="flex:1;min-width:160px;">
-              <div style="background:rgba(37,99,235,.1);height:12px;width:70%;border-radius:5px;margin-bottom:8px;"></div>
-              <div style="background:rgba(37,99,235,.05);height:10px;width:50%;border-radius:5px;margin-bottom:12px;"></div>
-              <div class="flex" style="gap:8px;margin-top:6px;">
-                <div style="background:#eef3fb;height:50px;flex:1;border-radius:6px;"></div>
-                <div style="background:#eef3fb;height:50px;flex:1;border-radius:6px;"></div>
+      <div style="flex:1;min-width:280px;position:relative;">
+        <!-- демонстрация мини-превью -->
+        <div class="card shadow" style="padding:16px;">
+          <div style="display:flex;gap:12px;align-items:start;">
+            <div style="flex:1;">
+              <div style="background:#e8ecf8;height:14px;width:70%;border-radius:6px;margin-bottom:8px;"></div>
+              <div style="background:#dfe6f2;height:12px;width:50%;border-radius:6px;margin-bottom:12px;"></div>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <div style="background:#eef3fb;height:60px;flex:1;border-radius:8px;"></div>
+                <div style="background:#eef3fb;height:60px;flex:1;border-radius:8px;"></div>
+                <div style="background:#eef3fb;height:60px;flex:1;border-radius:8px;"></div>
               </div>
             </div>
-            <div style="width:100px;min-width:100px;">
-              <div style="background:#f0f4f9;height:100px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#556678;">Preview</div>
+            <div style="width:120px;">
+              <div style="background:#f0f4f9;height:120px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#556678;">Live Preview</div>
             </div>
           </div>
-          <div class="badge" style="position:absolute;top:12px;right:12px;">Пример</div>
+          <div class="badge-live">Пример</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- преимущества -->
+    <div class="divider"></div>
+    <div class="container">
+      <div style="text-align:center;max-width:900px;margin:0 auto;">
+        <h2 style="font-size:1.9rem;">Почему это работает</h2>
+        <p class="small">Простой поток, профессиональный результат. Без барьеров.</p>
+      </div>
+      <div class="flex" style="margin-top:30px;gap:20px;flex-wrap:wrap;">
+        <div class="card" style="flex:1;min-width:220px;">
+          <div style="display:flex;gap:12px;align-items:start;">
+            <div style="font-size:1.5rem;line-height:1;">⚡</div>
+            <div>
+              <div style="font-weight:600;">Мгновенно</div>
+              <div class="small">Портфолио готово за секунды — без лишних форм.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="flex:1;min-width:220px;">
+          <div style="display:flex;gap:12px;align-items:start;">
+            <div style="font-size:1.5rem;line-height:1;">🎨</div>
+            <div>
+              <div style="font-weight:600;">Премиальный дизайн</div>
+              <div class="small">Готовые шаблоны, адаптивные и выразительные.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="flex:1;min-width:220px;">
+          <div style="display:flex;gap:12px;align-items:start;">
+            <div style="font-size:1.5rem;line-height:1;">✏️</div>
+            <div>
+              <div style="font-weight:600;">Полный контроль</div>
+              <div class="small">Inline-редактирование: текст, цвета, секции — всё здесь.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="flex:1;min-width:220px;">
+          <div style="display:flex;gap:12px;align-items:start;">
+            <div style="font-size:1.5rem;line-height:1;">🌀</div>
+            <div>
+              <div style="font-weight:600;">Живые анимации</div>
+              <div class="small">Мягкие входы и hover-эффекты с учетом prefers-reduced-motion.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="flex:1;min-width:220px;">
+          <div style="display:flex;gap:12px;align-items:start;">
+            <div style="font-size:1.5rem;line-height:1;">🔗</div>
+            <div>
+              <div style="font-weight:600;">Без привязки</div>
+              <div class="small">Никаких email, подписок и скрытых условий.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Галерея шаблонов -->
+    <div id="gallery" class="divider"></div>
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div>
+          <h2 style="font-size:1.9rem;">Шаблоны и вдохновение</h2>
+          <p class="small">Начни с готового: для дизайнеров, разработчиков, минималистов.</p>
+        </div>
+        <div class="template-filter" aria-label="Фильтры шаблонов">
+          <button data-filter="all" class="active" onclick="filterTemplates('all')">Все</button>
+          <button data-filter="designer" onclick="filterTemplates('designer')">Дизайнер</button>
+          <button data-filter="developer" onclick="filterTemplates('developer')">Разработчик</button>
+          <button data-filter="minimal" onclick="filterTemplates('minimal')">Минималист</button>
+        </div>
+      </div>
+      <div id="templates" class="flex" style="flex-wrap:wrap;gap:16px;margin-top:12px;">
+        <!-- шаблоны -->
+        <div class="card template-card" data-type="designer" onclick="selectTemplate('ux')" id="tpl-ux" style="flex:1;min-width:260px;max-width:320px;">
+          <div class="badge-template">Лучше всего для UX-дизайнеров</div>
+          <div class="template-thumb">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-weight:600;">UX Designer</div>
+              <div class="pill-small">Вдохновляюще</div>
+            </div>
+            <div style="margin-top:8px;">
+              <div style="background:#e6eaf7;height:10px;width:60%;border-radius:5px;margin-bottom:6px;"></div>
+              <div style="background:#d9e2f9;height:8px;width:40%;border-radius:5px;margin-bottom:6px;"></div>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <div style="background:#eef3fb;height:40px;flex:1;border-radius:5px;"></div>
+                <div style="background:#eef3fb;height:40px;flex:1;border-radius:5px;"></div>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+              <div class="small">Профессиональное</div>
+              <div><button class="btn-secondary" onclick="event.stopPropagation(); selectTemplate('ux'); createDraft()">Попробовать</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card template-card" data-type="developer" onclick="selectTemplate('dev')" id="tpl-dev" style="flex:1;min-width:260px;max-width:320px;">
+          <div class="badge-template">Для разработчиков с проектами</div>
+          <div class="template-thumb">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-weight:600;">Frontend Engineer</div>
+              <div class="pill-small">Технически</div>
+            </div>
+            <div style="margin-top:8px;">
+              <div style="background:#f0f8f0;height:10px;width:50%;border-radius:5px;margin-bottom:6px;"></div>
+              <div style="background:#d7eed9;height:8px;width:70%;border-radius:5px;margin-bottom:6px;"></div>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <div style="background:#e7f5ec;height:40px;flex:1;border-radius:5px;"></div>
+                <div style="background:#e7f5ec;height:40px;flex:1;border-radius:5px;"></div>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+              <div class="small">Прогрессивное</div>
+              <div><button class="btn-secondary" onclick="event.stopPropagation(); selectTemplate('dev'); createDraft()">Попробовать</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card template-card" data-type="minimal" onclick="selectTemplate('minimal')" id="tpl-minimal" style="flex:1;min-width:260px;max-width:320px;">
+          <div class="badge-template">Минималистичное резюме</div>
+          <div class="template-thumb">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-weight:600;">Minimal Resume</div>
+              <div class="pill-small">Чисто</div>
+            </div>
+            <div style="margin-top:8px;">
+              <div style="background:#f9f9f9;border:1px solid #ddd;height:10px;width:55%;border-radius:5px;margin-bottom:6px;"></div>
+              <div style="background:#f9f9f9;border:1px solid #ddd;height:8px;width:45%;border-radius:5px;margin-bottom:6px;"></div>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <div style="background:#f9f9f9;border:1px solid #ddd;height:40px;flex:1;border-radius:5px;"></div>
+                <div style="background:#f9f9f9;border:1px solid #ddd;height:40px;flex:1;border-radius:5px;"></div>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+              <div class="small">Лаконично</div>
+              <div><button class="btn-secondary" onclick="event.stopPropagation(); selectTemplate('minimal'); createDraft()">Попробовать</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Как это работает -->
+    <div class="divider"></div>
+    <div class="container">
+      <div style="text-align:center;max-width:800px;margin:0 auto;">
+        <h2 style="font-size:1.9rem;">Как это работает</h2>
+        <p class="small">Три шага до живой ссылки.</p>
+      </div>
+      <div class="stepper">
+        <div class="step">
+          <div class="circle">1</div>
+          <div>
+            <div style="font-weight:600;">Выбери шаблон</div>
+            <div class="small">Нажми, чтобы начать с готового стиля.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="circle">2</div>
+          <div>
+            <div style="font-weight:600;">Настрой</div>
+            <div class="small">Кликни по тексту и картинкам, чтобы редактировать inline.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="circle">3</div>
+          <div>
+            <div style="font-weight:600;">Поделись</div>
+            <div class="small">Скопируй ссылку — она сразу показывает текущее портфолио.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Редактор и preview -->
+    <div class="divider"></div>
+    <div class="container">
+      <div class="editor" aria-label="Редактор портфолио">
+        <!-- левая панель -->
+        <div class="panel" style="flex:1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h3>Редактирование</h3>
+              <div class="small">Гостевой драфт — сохраняется автоматически.</div>
+            </div>
+            <div>
+              <button class="btn-secondary" onclick="undo()">↺</button>
+              <button class="btn-secondary" onclick="redo()">↻</button>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <div class="small">Шаблон</div>
+            <div class="flex-wrap" style="margin-top:6px;">
+              <button class="toggle" data-template="ux" onclick="selectTemplate('ux')">UX Designer</button>
+              <button class="toggle" data-template="dev" onclick="selectTemplate('dev')">Developer</button>
+              <button class="toggle" data-template="minimal" onclick="selectTemplate('minimal')">Minimal</button>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div class="small">Тема</div>
+            <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
+              <div>
+                <div class="small">Цвет акцента</div>
+                <input type="color" id="colorPicker" value="#2563eb" onchange="updateTheme()" aria-label="Выбор основного цвета" />
+              </div>
+              <div>
+                <div class="small">Шрифт</div>
+                <select id="fontSelect" onchange="updateTheme()" aria-label="Выбор шрифта">
+                  <option value="system-ui,-apple-system,BlinkMacSystemFont,sans-serif">Система</option>
+                  <option value="'Segoe UI', system-ui,-apple-system">Segoe UI</option>
+                  <option value="'Roboto', system-ui,-apple-system">Roboto</option>
+                  <option value="'Open Sans', system-ui,-apple-system">Open Sans</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div class="small">Шаринг</div>
+            <div class="share-box">
+              <input type="text" id="shareLink" readonly style="flex:1;padding:8px;border:1px solid #d4d9e2;border-radius:6px;font-size:.9rem;" aria-label="Ссылка для шаринга" />
+              <button class="btn-primary" onclick="copyLink()">Скопировать</button>
+            </div>
+            <div class="micro">Ссылка содержит текущее состояние. Открытие показывает портфолио в режиме просмотра.</div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div class="small">Экспорт</div>
+            <div style="margin-top:6px;">
+              <button class="btn-secondary" onclick="downloadStatic()">Скачать статическое HTML</button>
+            </div>
+            <div class="micro">Получаешь единичный HTML-файл с текущим портфолио.</div>
+          </div>
+
+          <div style="margin-top:30px;">
+            <div class="small">История</div>
+            <div class="micro">Автосохранение. Можно отменить/вернуть.</div>
+          </div>
+        </div>
+
+        <!-- canvas (предпросмотр / редактирование) -->
+        <div class="panel" style="flex:2;" aria-label="Canvas редактора">
+          <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:10px;">
+            <div>
+              <div contenteditable="true" class="inline-edit" id="title" style="font-size:2rem;font-weight:700;">Имя Фамилия</div>
+              <div contenteditable="true" class="inline-edit small" id="subtitle" style="margin-top:4px;">Frontend-инженер, создаю интерфейсы</div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <div class="pill-sm">Просмотр</div>
+              <div class="pill-sm">Редактирование</div>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div class="badge-new">О себе</div>
+            <div contenteditable="true" class="inline-edit" id="about" style="margin-top:6px;padding:12px;border:1px solid #e3e8f9;border-radius:8px;">
+              Привет! Я создаю быстрые и выразительные портфолио без лишних усилий. Использую современный стек и делаю всё интерактивно.
+            </div>
+          </div>
+
+          <div style="margin-top:30px;">
+            <div class="badge-new">Проекты</div>
+            <div id="projects" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:10px;">
+              <!-- проектные карточки -->
+            </div>
+            <div style="margin-top:12px;">
+              <button class="btn-secondary" onclick="addProject()">Добавить проект</button>
+            </div>
+          </div>
+
+          <div style="margin-top:30px;">
+            <div class="badge-new">Контакты</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;">
+              <div contenteditable="true" class="inline-edit" style="padding:8px;border:1px solid #dce2f0;border-radius:6px;flex:1;min-width:120px;">Email: example@mail.com</div>
+              <div contenteditable="true" class="inline-edit" style="padding:8px;border:1px solid #dce2f0;border-radius:6px;flex:1;min-width:120px;">GitHub: github.com/username</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- правая панель -->
+        <div class="panel" style="flex:1;">
+          <div>
+            <h3>Настройки</h3>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="small">Анимации</div>
+            <div style="margin-top:6px;">
+              <label><input type="checkbox" id="toggleAnimation" checked onchange="applyAnimationSettings()"> Включены входные эффекты</label>
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <div class="small">SEO & превью</div>
+            <div style="margin-top:8px;">
+              <div class="small">Title</div>
+              <input type="text" id="seoTitle" placeholder="Заголовок для поиска" style="width:100%;padding:8px;border:1px solid #d4d9e2;border-radius:6px;margin-top:4px;" />
+              <div class="small" style="margin-top:10px;">Description</div>
+              <textarea id="seoDesc" rows="3" placeholder="Описание для предпросмотра" style="width:100%;padding:8px;border:1px solid #d4d9e2;border-radius:6px;margin-top:4px;"></textarea>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div class="small">Превью</div>
+            <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:100px;">
+                <div class="small">Мобильное</div>
+                <div style="border:1px solid #d4d9e2;border-radius:8px;padding:6px;margin-top:4px;">📱</div>
+              </div>
+              <div style="flex:1;min-width:100px;">
+                <div class="small">Десктоп</div>
+                <div style="border:1px solid #d4d9e2;border-radius:8px;padding:6px;margin-top:4px;">🖥️</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Кейсы -->
+    <div class="divider"></div>
+    <div class="container">
+      <div style="text-align:center;max-width:800px;margin:0 auto;">
+        <h2 style="font-size:1.9rem;">Живые кейсы</h2>
+        <p class="small">Примеры пользователей, которые уже делятся своими портфолио.</p>
+      </div>
+      <div class="case">
+        <div class="case-card">
+          <div class="case-thumbnail">
+            <div>Фриланс-дизайнер — резюме и проекты</div>
+          </div>
+          <div style="padding:12px;">
+            <div style="font-weight:600;">Anna Ivanova</div>
+            <div class="small" style="margin-top:4px;">UX/UI designer. Примеры редизайна.</div>
+            <div style="margin-top:10px;">
+              <button class="btn-secondary" onclick="alert('Открыть живое портфолио')">Открыть</button>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-thumbnail">
+            <div>Frontend-инженер — проекты и блог</div>
+          </div>
+          <div style="padding:12px;">
+            <div style="font-weight:600;">Ivan Petrov</div>
+            <div class="small" style="margin-top:4px;">React / Vanilla JS. Публикации и кейсы.</div>
+            <div style="margin-top:10px;">
+              <button class="btn-secondary" onclick="alert('Открыть живое портфолио')">Открыть</button>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-thumbnail">
+            <div>Минималистичное резюме</div>
+          </div>
+          <div style="padding:12px;">
+            <div style="font-weight:600;">Maria S.</div>
+            <div class="small" style="margin-top:4px;">Краткое, чистое, эффектное.</div>
+            <div style="margin-top:10px;">
+              <button class="btn-secondary" onclick="alert('Открыть живое портфолио')">Открыть</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Без подписок / доверие -->
+    <div class="divider"></div>
+    <div class="container" style="padding:40px 0;">
+      <div class="card" style="display:flex;gap:30px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:220px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="font-size:1.8rem;">🛡️</div>
+            <div>
+              <div style="font-weight:700;">Без подписок</div>
+              <div class="small">Ты создаёшь — и сразу получаешь ссылку. Никаких email, платёжных данных.</div>
+            </div>
+          </div>
+          <div class="small">Сохраняй локально, делись публично. Без спама. Без обязательств.</div>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div class="small">Что происходит под капотом:</div>
+          <ul style="padding-left:18px;margin-top:6px;">
+            <li>Автосохранение в браузере</li>
+            <li>Сериализация состояния в ссылку</li>
+            <li>Inline-редактирование без модалок</li>
+            <li>Настройка темы, SEO и шаринг</li>
+            <li>Экспорт в чистый HTML одним кликом</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="footer-col">
+            <div style="font-weight:700;margin-bottom:6px;">InstantPortfolio</div>
+            <div class="small">Мгновенные портфолио — без регистрации, без подписок.</div>
+          </div>
+          <div class="footer-col">
+            <div style="font-weight:600;margin-bottom:6px;">Навигация</div>
+            <div><a class="link" href="#gallery">Шаблоны</a></div>
+            <div><a class="link" href="#about">О продукте</a></div>
+            <div><a class="link" href="javascript:void(0)">FAQ</a></div>
+            <div><a class="link" href="javascript:void(0)">Обратная связь</a></div>
+          </div>
+          <div class="footer-col">
+            <div style="font-weight:600;margin-bottom:6px;">Право</div>
+            <div><a class="link" href="javascript:void(0)">Политика приватности</a></div>
+            <div><a class="link" href="javascript:void(0)">Условия</a></div>
+          </div>
+          <div class="footer-col">
+            <div style="font-weight:600;margin-bottom:6px;">Контакты</div>
+            <div class="small">support@instantportfolio.example</div>
+          </div>
+        </div>
+        <div style="margin-top:30px;text-align:center;">
+          <div class="small">&copy; <span id="footerYear"></span> InstantPortfolio. Все права защищены.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- WHY IT WORKS -->
-  <div class="container" style="margin-top:40px;">
-    <div style="text-align:center;max-width:900px;margin:0 auto;">
-      <h2>Почему это работает</h2>
-      <p class="small">Шаблон → настройка → шаринг. Без барьеров.</p>
-    </div>
-    <div class="flex" style="margin-top:24px;gap:16px;flex-wrap:wrap;">
-      <div class="card" style="flex:1;min-width:200px;">
-        <div class="flex" style="gap:12px;">
-          <div style="font-size:1.5rem;">⚡</div>
-          <div>
-            <div style="font-weight:600;">Мгновенно</div>
-            <div class="small">Гостевой драфт работает сразу.</div>
-          </div>
-        </div>
-      </div>
-      <div class="card" style="flex:1;min-width:200px;">
-        <div class="flex" style="gap:12px;">
-          <div style="font-size:1.5rem;">🎨</div>
-          <div>
-            <div style="font-weight:600;">Дизайн</div>
-            <div class="small">Кардинально разные визуальные шаблоны.</div>
-          </div>
-        </div>
-      </div>
-      <div class="card" style="flex:1;min-width:200px;">
-        <div class="flex" style="gap:12px;">
-          <div style="font-size:1.5rem;">✏️</div>
-          <div>
-            <div style="font-weight:600;">Контроль</div>
-            <div class="small">Изменяй всё без форм.</div>
-          </div>
-        </div>
-      </div>
-      <div class="card" style="flex:1;min-width:200px;">
-        <div class="flex" style="gap:12px;">
-          <div style="font-size:1.5rem;">🔗</div>
-          <div>
-            <div style="font-weight:600;">Шаринг</div>
-            <div class="small">Ссылка сохраняет текущее состояние.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GALLERY -->
-  <div id="gallery" class="container" style="margin-top:60px;">
-    <div class="flex space-between" style="flex-wrap:wrap;gap:12px;">
-      <div>
-        <h2>Шаблоны</h2>
-        <p class="small">Выбери стиль: классика, минимализм или визуальное showcase.</p>
-      </div>
-      <div class="template-filter">
-        <button data-filter="all" class="active" onclick="filterTemplates('all')">Все</button>
-        <button data-filter="classic" onclick="filterTemplates('classic')">Classic</button>
-        <button data-filter="minimal" onclick="filterTemplates('minimal')">Minimal</button>
-        <button data-filter="showcase" onclick="filterTemplates('showcase')">Showcase</button>
-      </div>
-    </div>
-    <div id="templates" class="flex" style="flex-wrap:wrap;gap:16px;margin-top:16px;">
-      <div class="template-card" data-type="classic" id="tpl-classic" onclick="selectTemplate('classic')">
-        <div class="template-label">Classic</div>
-        <div style="font-weight:600;margin-bottom:6px;">Традиционное резюме</div>
-        <div class="small">Фокус на тексте и контактах.</div>
-        <div style="margin-top:10px;">
-          <button class="btn-secondary" onclick="event.stopPropagation(); selectTemplate('classic'); createDraft();">Выбрать</button>
-        </div>
-      </div>
-      <div class="template-card" data-type="minimal" id="tpl-minimal" onclick="selectTemplate('minimal')">
-        <div class="template-label">Minimal</div>
-        <div style="font-weight:600;margin-bottom:6px;">Минимализм</div>
-        <div class="small">Чистое пространство, простая типографика.</div>
-        <div style="margin-top:10px;">
-          <button class="btn-secondary" onclick="event.stopPropagation(); selectTemplate('minimal'); createDraft();">Выбрать</button>
-        </div>
-      </div>
-      <div class="template-card" data-type="showcase" id="tpl-showcase" onclick="selectTemplate('showcase')">
-        <div class="template-label">Showcase</div>
-        <div style="font-weight:600;margin-bottom:6px;">Визуальное портфолио</div>
-        <div class="small">Крупные изображения и акценты.</div>
-        <div style="margin-top:10px;">
-          <button class="btn-secondary" onclick="event.stopPropagation(); selectTemplate('showcase'); createDraft();">Выбрать</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EDITOR -->
-  <div class="container" style="margin-top:50px;">
-    <div class="editor">
-      <!-- левая панель -->
-      <div class="panel" style="min-width:240px;max-width:360px;">
-        <div class="flex-wrap" style="gap:10px;">
-          <div>
-            <div class="small" style="font-weight:600;">Редактор</div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-secondary" onclick="undo()">↺ Undo</button>
-            <button class="btn-secondary" onclick="redo()">↻ Redo</button>
-          </div>
-        </div>
-
-        <div style="margin-top:18px;">
-          <div class="small" style="margin-bottom:6px;">Шаблон</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-secondary" onclick="selectTemplate('classic')">Classic</button>
-            <button class="btn-secondary" onclick="selectTemplate('minimal')">Minimal</button>
-            <button class="btn-secondary" onclick="selectTemplate('showcase')">Showcase</button>
-          </div>
-        </div>
-
-        <div style="margin-top:18px;">
-          <div class="small" style="margin-bottom:6px;">Цвета</div>
-          <div class="color-row">
-            <div class="color-box">
-              <div class="small">Акцент</div>
-              <input type="color" id="primaryColor" value="#2563eb" aria-label="Основной цвет" onchange="updateColors()" />
-            </div>
-            <div class="color-box">
-              <div class="small">Фон карточек</div>
-              <input type="color" id="cardColor" value="#ffffff" aria-label="Фон карточек" onchange="updateColors()" />
-            </div>
-            <div class="color-box">
-              <div class="small">Текст</div>
-              <input type="color" id="textColor" value="#1f2d3a" aria-label="Цвет текста" onchange="updateColors()" />
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:18px;">
-          <div class="small" style="margin-bottom:6px;">SEO</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <input type="text" id="seoTitle" placeholder="Title" class="inline-input" />
-            <textarea id="seoDesc" rows="2" placeholder="Description" class="inline-input"></textarea>
-          </div>
-        </div>
-
-        <div style="margin-top:18px;">
-          <div class="small" style="margin-bottom:6px;">Просмотр</div>
-          <div class="preview-toggle">
-            <div class="preview-button active" id="editModeBtn" onclick="setPreview(false)">Редактировать</div>
-            <div class="preview-button" id="viewModeBtn" onclick="setPreview(true)">Посмотреть</div>
-          </div>
-        </div>
-
-        <div style="margin-top:18px;">
-          <div class="small" style="margin-bottom:6px;">Шаринг</div>
-          <div class="share-box">
-            <input type="text" id="shareLink" readonly style="flex:1;padding:8px;border:1px solid #d4d9e2;border-radius:6px;font-size:.85rem;" />
-            <button class="btn-primary" onclick="copyLink()">Копировать</button>
-          </div>
-          <div class="small" style="margin-top:4px;">Ссылка отражает всё состояние.</div>
-        </div>
-
-        <div style="margin-top:18px;">
-          <div class="small" style="margin-bottom:6px;">Экспорт</div>
-          <button class="btn-secondary" onclick="downloadStatic()">Скачать index.html</button>
-          <div class="small" style="margin-top:4px;">Автономное портфолио.</div>
-        </div>
-      </div>
-
-      <!-- canvas -->
-      <div class="panel" style="flex:2;min-width:320px;">
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-          <div style="flex:1;min-width:220px;">
-            <div contenteditable="true" class="inline-edit" id="title" style="font-size:1.8rem;font-weight:700;">Имя Фамилия</div>
-            <div contenteditable="true" class="inline-edit small" id="subtitle" style="margin-top:4px;">Frontend-инженер</div>
-          </div>
-        </div>
-
-        <div id="sectionsWrapper" style="margin-top:24px;">
-          <!-- О себе -->
-          <div class="section" data-key="about">
-            <div class="section-header">
-              <div>
-                <div style="font-weight:600;">О себе</div>
-                <div class="small">Короткое описание.</div>
-              </div>
-              <div class="section-controls" style="display:flex;gap:6px;">
-                <button class="btn-secondary" onclick="removeSection('about')">Удалить</button>
-                <button class="btn-secondary" onclick="duplicateSection('about')">Дублировать</button>
-              </div>
-            </div>
-            <div contenteditable="true" class="inline-edit" id="about" style="padding:12px;border:1px solid #d4d9e2;border-radius:8px;">
-              Привет! Я создаю портфолио быстро и красиво. Добавляй фото, ссылки, меняй цвета.
-            </div>
-          </div>
-
-          <!-- Проекты -->
-          <div class="section" data-key="projects">
-            <div class="section-header">
-              <div>
-                <div style="font-weight:600;">Проекты</div>
-                <div class="small">Добавь свои работы, фото и ссылки.</div>
-              </div>
-              <div class="section-controls" style="display:flex;gap:6px;">
-                <button class="btn-secondary" onclick="removeSection('projects')">Удалить</button>
-                <button class="btn-secondary" onclick="duplicateSection('projects')">Дублировать</button>
-              </div>
-            </div>
-            <div id="projects" class="project-grid"></div>
-            <div style="margin-top:12px;">
-              <button class="btn-secondary" onclick="addProject()">+ Добавить проект</button>
-            </div>
-          </div>
-
-          <!-- Контакты -->
-          <div class="section" data-key="contacts">
-            <div class="section-header">
-              <div>
-                <div style="font-weight:600;">Контакты</div>
-                <div class="small">Где тебя найти.</div>
-              </div>
-              <div class="section-controls" style="display:flex;gap:6px;">
-                <button class="btn-secondary" onclick="removeSection('contacts')">Удалить</button>
-                <button class="btn-secondary" onclick="duplicateSection('contacts')">Дублировать</button>
-              </div>
-            </div>
-            <div class="flex" style="gap:12px;flex-wrap:wrap;">
-              <div style="flex:1;min-width:140px;">
-                <div class="small">Email</div>
-                <div contenteditable="true" class="inline-edit" id="contactEmail" style="padding:8px;border:1px solid #d4d9e2;border-radius:6px;">example@mail.com</div>
-              </div>
-              <div style="flex:1;min-width:140px;">
-                <div class="small">GitHub</div>
-                <div contenteditable="true" class="inline-edit" id="contactGithub" style="padding:8px;border:1px solid #d4d9e2;border-radius:6px;">github.com/username</div>
-              </div>
-              <div style="flex:1;min-width:140px;">
-                <div class="small">Website</div>
-                <div contenteditable="true" class="inline-edit" id="contactWebsite" style="padding:8px;border:1px solid #d4d9e2;border-radius:6px;">yourdomain.com</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:14px;">
-          <button class="btn-secondary" onclick="addSection()">+ Добавить секцию</button>
-          <div class="small" style="margin-top:4px;">Можно дублировать, удалять.</div>
-        </div>
-      </div>
-
-      <!-- правая панель -->
-      <div class="panel" style="min-width:220px;max-width:300px;">
-        <div class="small" style="font-weight:600;margin-bottom:8px;">Предпросмотр</div>
-        <div class="card" style="padding:14px;margin-bottom:12px;">
-          <div class="small">Мобильный</div>
-          <div style="margin-top:6px;font-size:.8rem;">(визуальный маркер, пока статично)</div>
-        </div>
-        <div class="card" style="padding:14px;">
-          <div class="small">Десктоп</div>
-          <div style="margin-top:6px;font-size:.8rem;">(визуальный маркер, пока статично)</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Кейсы -->
-  <div class="container" style="margin-top:60px;">
-    <div style="text-align:center;max-width:800px;margin:0 auto;">
-      <h2>Живые кейсы</h2>
-      <p class="small">Примеры пользователей, которые уже делятся портфолио.</p>
-    </div>
-    <div class="flex" style="gap:16px;flex-wrap:wrap;margin-top:14px;">
-      <div class="card" style="flex:1;min-width:250px;">
-        <div style="font-weight:600;">Anna Ivanova</div>
-        <div class="small">Фриланс-дизайнер, UX/UI</div>
-        <div style="margin-top:10px;"><button class="btn-secondary" onclick="alert('Открыть пример Anna')">Открыть</button></div>
-      </div>
-      <div class="card" style="flex:1;min-width:250px;">
-        <div style="font-weight:600;">Ivan Petrov</div>
-        <div class="small">Frontend-инженер</div>
-        <div style="margin-top:10px;"><button class="btn-secondary" onclick="alert('Открыть пример Ivan')">Открыть</button></div>
-      </div>
-      <div class="card" style="flex:1;min-width:250px;">
-        <div style="font-weight:600;">Maria S.</div>
-        <div class="small">Минималистичное резюме</div>
-        <div style="margin-top:10px;"><button class="btn-secondary" onclick="alert('Открыть пример Maria')">Открыть</button></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Доверие -->
-  <div class="container" style="margin:60px 0;">
-    <div class="card" style="display:flex;gap:24px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:220px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-          <div style="font-size:1.7rem;">🛡️</div>
-          <div>
-            <div style="font-weight:600;">Без подписок</div>
-            <div class="small">Никаких email, платежей и скрытых условий. Делись сразу.</div>
-          </div>
-        </div>
-        <div class="small">Локальные драфты, экспорт, живые ссылки.</div>
-      </div>
-      <div style="flex:1;min-width:220px;">
-        <div class="small">Что внутри:</div>
-        <ul style="margin-top:6px;padding-left:16px;">
-          <li>Inline-редактирование</li>
-          <li>Настройка цветов</li>
-          <li>Фото и ссылки</li>
-          <li>Разные шаблоны</li>
-          <li>Публичная ссылка</li>
-          <li>Экспорт</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="container">
-      <div class="row">
-        <div class="footer-col">
-          <div style="font-weight:700;margin-bottom:6px;">InstantPortfolio</div>
-          <div class="small">Мгновенные портфолио. Без регистрации, без подписок.</div>
-        </div>
-        <div class="footer-col">
-          <div style="font-weight:600;margin-bottom:6px;">Навигация</div>
-          <div><a class="link" href="#gallery">Шаблоны</a></div>
-          <div><a class="link" href="javascript:void(0)">FAQ</a></div>
-          <div><a class="link" href="javascript:void(0)">Обратная связь</a></div>
-        </div>
-        <div class="footer-col">
-          <div style="font-weight:600;margin-bottom:6px;">Право</div>
-          <div><a class="link" href="javascript:void(0)">Политика приватности</a></div>
-          <div><a class="link" href="javascript:void(0)">Условия</a></div>
-        </div>
-        <div class="footer-col">
-          <div style="font-weight:600;margin-bottom:6px;">Контакты</div>
-          <div class="small">support@instantportfolio.example</div>
-        </div>
-      </div>
-      <div style="margin-top:30px;text-align:center;">
-        <div class="small">&copy; <span id="footerYear"></span> InstantPortfolio. Все права защищены.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Сжатие состояния -->
+  <!-- LZ-STRING (сжатие/декомпрессия) -->
   <script>
-    const LZString = {
-      compressToEncodedURIComponent: input => encodeURIComponent(btoa(unescape(encodeURIComponent(input)))),
-      decompressFromEncodedURIComponent: input => { try{ return decodeURIComponent(escape(atob(decodeURIComponent(input)))); }catch{ return null; } }
-    };
+    // Минимальная реализация lz-string для compressToEncodedURIComponent / decompressFromEncodedURIComponent
+    // Источник: https://github.com/pieroxy/lz-string (схематически адаптировано)
+    const LZString = (function(){
+      const f = String.fromCharCode;
+      const keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+      function compressToEncodedURIComponent(input) {
+        if (input == null) return "";
+        return encodeURIComponent(_compress(input, 6, function(a){ return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$".charAt(a); }));
+      }
+      function decompressFromEncodedURIComponent(input) {
+        if (input == null) return "";
+        input = decodeURIComponent(input);
+        return _decompress(input.length, 32, function(index){ return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$".charAt(index); });
+      }
+      function _compress(uncompressed, bitsPerChar, getCharFromInt) {
+        if (uncompressed == null) return "";
+        let i, value, context_dictionary = {}, context_dictionaryToCreate = {}, context_c = "", context_wc = "", context_w = "", context_enlargeIn = 2, context_dictSize = 3, context_numBits = 2, context_data = [], context_data_val = 0, context_data_position = 0;
+        for (let ii = 0; ii < uncompressed.length; ii += 1) {
+          context_c = uncompressed.charAt(ii);
+          if (!Object.prototype.hasOwnProperty.call(context_dictionary, context_c)) {
+            context_dictionary[context_c] = context_dictSize++;
+            context_dictionaryToCreate[context_c] = true;
+          }
+          context_wc = context_w + context_c;
+          if (Object.prototype.hasOwnProperty.call(context_dictionary, context_wc)) {
+            context_w = context_wc;
+          } else {
+            if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate, context_w)) {
+              value = context_w.charCodeAt(0);
+              for (i = 0; i < context_numBits; i++) {
+                context_data_val = (context_data_val << 1);
+                if ((value & (1 << (context_numBits - i - 1))) !== 0) context_data_val |= 1;
+                context_data_position++;
+                if (context_data_position == 8) {
+                  context_data_position = 0;
+                  context_data.push(f(context_data_val));
+                  context_data_val = 0;
+                }
+              }
+              context_enlargeIn--;
+              if (context_enlargeIn == 0) {
+                context_enlargeIn = Math.pow(2, context_numBits);
+                context_numBits++;
+              }
+              delete context_dictionaryToCreate[context_w];
+            } else {
+              value = context_dictionary[context_w];
+              for (i = 0; i < context_numBits; i++) {
+                context_data_val = (context_data_val << 1) | ((value >> (context_numBits - i - 1)) & 1);
+                context_data_position++;
+                if (context_data_position == 8) {
+                  context_data_position = 0;
+                  context_data.push(f(context_data_val));
+                  context_data_val = 0;
+                }
+              }
+            }
+            context_enlargeIn--;
+            if (context_enlargeIn == 0) {
+              context_enlargeIn = Math.pow(2, context_numBits);
+              context_numBits++;
+            }
+            context_dictionary[context_wc] = context_dictSize++;
+            context_w = String(context_c);
+          }
+        }
+        if (context_w !== "") {
+          if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate, context_w)) {
+            value = context_w.charCodeAt(0);
+            for (i = 0; i < context_numBits; i++) {
+              context_data_val = (context_data_val << 1);
+              if ((value & (1 << (context_numBits - i - 1))) !== 0) context_data_val |= 1;
+              context_data_position++;
+              if (context_data_position == 8) {
+                context_data_position = 0;
+                context_data.push(f(context_data_val));
+                context_data_val = 0;
+              }
+            }
+            context_enlargeIn--;
+            if (context_enlargeIn == 0) {
+              context_enlargeIn = Math.pow(2, context_numBits);
+              context_numBits++;
+            }
+            delete context_dictionaryToCreate[context_w];
+          } else {
+            value = context_dictionary[context_w];
+            for (i = 0; i < context_numBits; i++) {
+              context_data_val = (context_data_val << 1) | ((value >> (context_numBits - i - 1)) & 1);
+              context_data_position++;
+              if (context_data_position == 8) {
+                context_data_position = 0;
+                context_data.push(f(context_data_val));
+                context_data_val = 0;
+              }
+            }
+          }
+          context_enlargeIn--;
+          if (context_enlargeIn == 0) {
+            context_enlargeIn = Math.pow(2, context_numBits);
+            context_numBits++;
+          }
+        }
+        value = 2;
+        for (i = 0; i < context_numBits; i++) {
+          context_data_val = (context_data_val << 1) | ((value >> (context_numBits - i - 1)) & 1);
+          context_data_position++;
+          if (context_data_position == 8) {
+            context_data_position = 0;
+            context_data.push(f(context_data_val));
+            context_data_val = 0;
+          }
+        }
+        while (true) {
+          context_data_val = (context_data_val << 1);
+          context_data_position++;
+          if (context_data_position == 8) {
+            context_data_position = 0;
+            context_data.push(f(context_data_val));
+            break;
+          }
+        }
+        return context_data.join('');
+      }
+      function _decompress(length, resetValue, getNextValue) {
+        let dictionary = [0,1];
+        let enlargeIn = 4;
+        let dictSize = 4;
+        let numBits = 3;
+        let entry = "";
+        let result = [];
+        let i, w, bits, resb, maxpower, power;
+        let data = { val:getNextValue(0), position:resetValue, index:1 };
+        function readBit() {
+          if (data.position == resetValue) {
+            data.position = 0;
+            data.val = getNextValue(data.index++);
+          }
+          const bit = (data.val >> (resetValue - data.position - 1)) & 1;
+          data.position++;
+          if (data.position == resetValue) data.position = resetValue;
+          return bit;
+        }
+        function readBits(n) {
+          let bits = 0;
+          for (let i = 0; i < n; i++) {
+            bits = (bits << 1) | readBit();
+          }
+          return bits;
+        }
+        let next = readBits(2);
+        switch (next) {
+          case 0: w = f(readBits(8)); break;
+          case 1: w = f(readBits(16)); break;
+          case 2: return "";
+        }
+        dictionary[2] = w;
+        result.push(w);
+        while (true) {
+          if (data.index > length) return "";
+          let cc = readBits(numBits);
+          let c;
+          switch (cc) {
+            case 0:
+              c = f(readBits(8));
+              dictionary[dictSize++] = c;
+              cc = dictSize -1;
+              enlargeIn--;
+              break;
+            case 1:
+              c = f(readBits(16));
+              dictionary[dictSize++] = c;
+              cc = dictSize -1;
+              enlargeIn--;
+              break;
+            case 2:
+              return result.join('');
+          }
+          if (enlargeIn == 0) {
+            enlargeIn = Math.pow(2, numBits);
+            numBits++;
+          }
+          if (dictionary[cc]) {
+            entry = dictionary[cc];
+          } else if (cc === dictSize) {
+            entry = w + w.charAt(0);
+          } else {
+            return null;
+          }
+          result.push(entry);
+          dictionary[dictSize++] = w + entry.charAt(0);
+          enlargeIn--;
+          w = entry;
+          if (enlargeIn == 0) {
+            enlargeIn = Math.pow(2, numBits);
+            numBits++;
+          }
+        }
+      }
+      return { compressToEncodedURIComponent, decompressFromEncodedURIComponent };
+    })();
   </script>
 
-  <!-- Логика -->
+  <!-- Основная логика -->
   <script>
+    // Состояние редактора
     let state = {
-      template: 'classic',
-      colors: { primary: '#2563eb', card: '#ffffff', text: '#1f2d3a' },
+      template: 'ux', // ux, dev, minimal
+      theme: {
+        accent: '#2563eb',
+        font: "system-ui,-apple-system,BlinkMacSystemFont,sans-serif"
+      },
       content: {
         title: 'Имя Фамилия',
-        subtitle: 'Frontend-инженер',
-        about: 'Привет! Я делаю портфолио быстро. Добавляй фото, ссылки и делись.',
+        subtitle: 'Frontend-инженер, создаю интерфейсы',
+        about: 'Привет! Я создаю быстрые и выразительные портфолио без лишних усилий. Использую современный стек и делаю всё интерактивно.',
         projects: [
-          { name: 'Проект A', desc: 'Описание проекта', image: '', link: 'https://example.com' },
-          { name: 'Проект B', desc: 'Еще один кейс', image: '', link: '' }
+          { name: 'Проект A', desc: 'Описание первого проекта.' },
+          { name: 'Проект B', desc: 'Описание второго проекта.' }
         ],
-        contacts: { email: 'example@mail.com', github: 'github.com/username', website: 'yourdomain.com' },
-        seo: { title: '', description: '' }
-      }
+        contacts: {
+          email: 'example@mail.com',
+          github: 'github.com/username'
+        },
+        seo: {
+          title: '',
+          description: ''
+        }
+      },
+      animations: true
     };
-    let history = [], ptr = -1;
-    const MAX_HISTORY = 50;
-    let saveTimer = null;
 
-    // Elements
+    // История для undo/redo
+    let history = [];
+    let historyPtr = -1;
+    const MAX_HISTORY = 30;
+    let saveTimeout = null;
+
+    // Элементы
     const titleEl = document.getElementById('title');
     const subtitleEl = document.getElementById('subtitle');
     const aboutEl = document.getElementById('about');
     const projectsEl = document.getElementById('projects');
     const shareLinkInput = document.getElementById('shareLink');
+    const colorPicker = document.getElementById('colorPicker');
+    const fontSelect = document.getElementById('fontSelect');
     const seoTitleEl = document.getElementById('seoTitle');
     const seoDescEl = document.getElementById('seoDesc');
-    const indicator = document.getElementById('savedIndicator');
-    const contactEmail = document.getElementById('contactEmail');
-    const contactGithub = document.getElementById('contactGithub');
-    const contactWebsite = document.getElementById('contactWebsite');
-    const primaryColorInput = document.getElementById('primaryColor');
-    const cardColorInput = document.getElementById('cardColor');
-    const textColorInput = document.getElementById('textColor');
     const footerYear = document.getElementById('footerYear');
-    const editModeBtn = document.getElementById('editModeBtn');
-    const viewModeBtn = document.getElementById('viewModeBtn');
 
-    function init(){
+    // Инициализация
+    function init() {
       footerYear.textContent = new Date().getFullYear();
-      bindInline([titleEl, subtitleEl, aboutEl]);
-      bindInlineContacts();
-      seoTitleEl.addEventListener('input', scheduleSave);
-      seoDescEl.addEventListener('input', scheduleSave);
-      primaryColorInput.addEventListener('input', updateColors);
-      cardColorInput.addEventListener('input', updateColors);
-      textColorInput.addEventListener('input', updateColors);
-      loadState();
+      // привязка inline редактирования
+      [titleEl, subtitleEl, aboutEl].forEach(el => {
+        el.addEventListener('input', scheduleStateSave);
+        el.addEventListener('blur', applyFromDOM);
+      });
+      seoTitleEl.addEventListener('input', scheduleStateSave);
+      seoDescEl.addEventListener('input', scheduleStateSave);
+
+      loadFromURLOrLocal();
       render();
       updateShareLink();
-      setPreview(false);
     }
 
-    function bindInline(arr){
-      arr.forEach(el=>{
-        el.addEventListener('input', scheduleSave);
-        el.addEventListener('blur', applyFromDOM);
-      });
-    }
-    function bindInlineContacts(){
-      [contactEmail, contactGithub, contactWebsite].forEach(el=>{
-        el.addEventListener('input', scheduleSave);
-        el.addEventListener('blur', applyFromDOM);
-      });
-    }
-
-    function scheduleSave(){
-      if(saveTimer) clearTimeout(saveTimer);
-      saveTimer = setTimeout(()=>{
+    function scheduleStateSave() {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
         applyFromDOM();
         pushHistory();
-        persist();
-        render();
+        persistLocal();
         updateShareLink();
-        showSaved();
-      }, 250);
+      }, 300);
     }
 
-    function showSaved(){
-      indicator.classList.add('show');
-      setTimeout(()=>indicator.classList.remove('show'), 900);
-    }
-
-    function applyFromDOM(){
+    function applyFromDOM() {
       state.content.title = titleEl.textContent.trim() || 'Имя Фамилия';
-      state.content.subtitle = subtitleEl.textContent.trim() || 'Frontend-инженер';
+      state.content.subtitle = subtitleEl.textContent.trim() || 'Frontend-инженер, создаю интерфейсы';
       state.content.about = aboutEl.textContent.trim();
-      const projectCards = Array.from(document.querySelectorAll('.project-card'));
-      state.content.projects = projectCards.map(card=>{
-        const name = card.querySelector('.proj-name')?.textContent.trim()||'';
-        const desc = card.querySelector('.proj-desc')?.textContent.trim()||'';
-        const link = card.querySelector('.proj-link')?.textContent.trim()||'';
-        const imgEl = card.querySelector('.proj-img');
-        const image = imgEl ? (imgEl.getAttribute('data-src')||imgEl.src):'';
-        return { name, desc, link, image };
+      // контакты
+      const contacts = Array.from(document.querySelectorAll('#projects .project-card')).map((card, idx) => {
+        return {
+          name: card.querySelector('.proj-name')?.textContent.trim() || `Проект ${idx+1}`,
+          desc: card.querySelector('.proj-desc')?.textContent.trim() || ''
+        };
       });
-      state.content.contacts.email = contactEmail.textContent.replace(/^Email:\s*/i,'').trim();
-      state.content.contacts.github = contactGithub.textContent.replace(/^GitHub:\s*/i,'').trim();
-      state.content.contacts.website = contactWebsite.textContent.trim();
+      if (contacts.length) state.content.projects = contacts;
+      // SEO
       state.content.seo.title = seoTitleEl.value;
       state.content.seo.description = seoDescEl.value;
     }
 
-    function pushHistory(){
-      const snap = JSON.stringify(state);
-      if(ptr >=0 && history[ptr] === snap) return;
-      history = history.slice(0, ptr+1);
-      history.push(snap);
-      if(history.length > MAX_HISTORY) history.shift();
-      ptr = history.length -1;
+    function pushHistory() {
+      const snapshot = JSON.stringify(state);
+      if (historyPtr >= 0 && history[historyPtr] === snapshot) return;
+      history = history.slice(0, historyPtr + 1);
+      history.push(snapshot);
+      if (history.length > MAX_HISTORY) history.shift();
+      historyPtr = history.length - 1;
     }
 
-    function undo(){ if(ptr>0){ ptr--; state=JSON.parse(history[ptr]); render(); persist(); updateShareLink(); } }
-    function redo(){ if(ptr < history.length-1){ ptr++; state=JSON.parse(history[ptr]); render(); persist(); updateShareLink(); } }
+    function undo() {
+      if (historyPtr > 0) {
+        historyPtr--;
+        state = JSON.parse(history[historyPtr]);
+        render();
+        persistLocal();
+        updateShareLink();
+      }
+    }
+    function redo() {
+      if (historyPtr < history.length -1) {
+        historyPtr++;
+        state = JSON.parse(history[historyPtr]);
+        render();
+        persistLocal();
+        updateShareLink();
+      }
+    }
 
-    function persist(){ try{ localStorage.setItem('instant_portfolio_draft', JSON.stringify(state)); }catch{} }
-    function loadState(){
+    function persistLocal() {
+      try {
+        localStorage.setItem('instant_portfolio_draft', JSON.stringify(state));
+      } catch {}
+    }
+
+    function loadFromURLOrLocal() {
       const hash = location.hash.slice(1);
-      if(hash.startsWith('s=')){
+      if (hash.startsWith('s=')) {
         const compressed = hash.slice(2);
-        try{
+        try {
           const raw = LZString.decompressFromEncodedURIComponent(compressed);
-          if(raw) state = JSON.parse(raw);
-        }catch{}
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            state = { ...state, ...parsed };
+          }
+        } catch (e) { console.warn('Не удалось разжать из URL', e); }
       } else {
-        try{
+        try {
           const saved = localStorage.getItem('instant_portfolio_draft');
-          if(saved) state = JSON.parse(saved);
-        }catch{}
+          if (saved) state = JSON.parse(saved);
+        } catch {}
       }
       pushHistory();
     }
 
-    function render(){
+    function render() {
+      // title/subtitle/about
       titleEl.textContent = state.content.title;
       subtitleEl.textContent = state.content.subtitle;
       aboutEl.textContent = state.content.about;
-      seoTitleEl.value = state.content.seo.title;
-      seoDescEl.value = state.content.seo.description;
-      contactEmail.textContent = 'Email: ' + state.content.contacts.email;
-      contactGithub.textContent = 'GitHub: ' + state.content.contacts.github;
-      contactWebsite.textContent = state.content.contacts.website;
-
-      document.documentElement.style.setProperty('--primary', state.colors.primary);
-      document.documentElement.style.setProperty('--card-bg', state.colors.card);
-      document.documentElement.style.setProperty('--text', state.colors.text);
-      primaryColorInput.value = state.colors.primary;
-      cardColorInput.value = state.colors.card;
-      textColorInput.value = state.colors.text;
-
-      renderProjects();
-      highlightTemplate();
-    }
-
-    function updateColors(){
-      state.colors.primary = primaryColorInput.value;
-      state.colors.card = cardColorInput.value;
-      state.colors.text = textColorInput.value;
-      render();
-      scheduleSave();
-    }
-
-    function renderProjects(){
+      // projects
       projectsEl.innerHTML = '';
-      state.content.projects.forEach((p,i)=>{
+      state.content.projects.forEach((p, i) => {
         const card = document.createElement('div');
-        card.className = 'project-card';
+        card.className = 'card project-card';
+        card.style.position='relative';
         card.innerHTML = `
-          <div contenteditable="true" class="proj-name" style="font-weight:600;">${escapeHTML(p.name)}</div>
-          <div contenteditable="true" class="proj-desc small" style="margin-top:4px;">${escapeHTML(p.desc)}</div>
-          <div contenteditable="true" class="proj-link link-style" style="margin-top:4px;">${escapeHTML(p.link)}</div>
-          <div style="margin-top:8px;">
-            <label style="font-size:.7rem;">Фото: <input type="file" accept="image/*" onchange="handleProjectImage(event, ${i})" /></label>
-            <div class="photo-thumb-wrapper" style="margin-top:6px;">
-              ${p.image ? `<img class="proj-img photo-thumb" data-src="${escapeHTML(p.image)}" src="${escapeHTML(p.image)}" alt="Фото проекта" />` : ''}
-            </div>
-          </div>
-          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <div contenteditable="true" class="proj-name inline-edit" style="font-weight:600;font-size:1rem;">${escapeHtml(p.name)}</div>
+          <div contenteditable="true" class="proj-desc small" style="margin-top:4px;">${escapeHtml(p.desc)}</div>
+          <div style="margin-top:10px;display:flex;gap:8px;">
             <button class="btn-secondary" onclick="removeProject(${i})">Удалить</button>
           </div>
         `;
-        card.querySelectorAll('[contenteditable]').forEach(el=>{
-          el.addEventListener('input', scheduleSave);
-          el.addEventListener('blur', applyFromDOM);
+        // слушатели
+        card.querySelectorAll('[contenteditable]').forEach(el => {
+          el.addEventListener('input', scheduleStateSave);
+          el.addEventListener('blur', () => {
+            applyFromDOM();
+            pushHistory();
+            updateShareLink();
+          });
         });
         projectsEl.appendChild(card);
       });
+      // contacts
+      // (already inline in canvas)
+      // SEO
+      seoTitleEl.value = state.content.seo.title;
+      seoDescEl.value = state.content.seo.description;
+      // theme
+      document.documentElement.style.setProperty('--primary', state.theme.accent);
+      document.documentElement.style.setProperty('font-family', state.theme.font);
+      colorPicker.value = state.theme.accent;
+      fontSelect.value = state.theme.font;
+      // animations
+      if (!state.animations || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.body.style.transition = 'none';
+      }
+      // template highlight
+      highlightTemplateSelection();
     }
 
-    function handleProjectImage(e,index){
-      const file = e.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(ev){
-        state.content.projects[index].image = ev.target.result;
-        scheduleSave();
-      };
-      reader.readAsDataURL(file);
+    function updateTheme() {
+      state.theme.accent = colorPicker.value;
+      state.theme.font = fontSelect.value;
+      applyThemeToDOM();
+      scheduleStateSave();
+    }
+    function applyThemeToDOM() {
+      document.documentElement.style.setProperty('--primary', state.theme.accent);
+      document.documentElement.style.setProperty('font-family', state.theme.font);
     }
 
-    function addProject(){
-      state.content.projects.push({ name: 'Новый проект', desc: 'Описание', image: '', link: '' });
+    function addProject() {
+      state.content.projects.push({ name: 'Новый проект', desc: 'Описание проекта.' });
       pushHistory();
       render();
-      persist();
       updateShareLink();
+      persistLocal();
     }
 
-    function removeProject(i){
-      state.content.projects.splice(i,1);
+    function removeProject(idx) {
+      state.content.projects.splice(idx,1);
       pushHistory();
       render();
-      persist();
       updateShareLink();
+      persistLocal();
     }
 
-    function selectTemplate(name){
+    function selectTemplate(name) {
       state.template = name;
-      highlightTemplate();
-      scheduleSave();
+      // визуально выделим
+      highlightTemplateSelection();
+      pushHistory();
+      updateShareLink();
+      persistLocal();
     }
 
-    function highlightTemplate(){
-      ['classic','minimal','showcase'].forEach(t=>{
-        const el = document.getElementById('tpl-' + t);
-        if(!el) return;
-        if(state.template===t) el.classList.add('selected');
-        else el.classList.remove('selected');
+    function highlightTemplateSelection() {
+      ['ux','dev','minimal'].forEach(t => {
+        const el = document.getElementById('tpl-' + (t==='dev'?'dev': t));
+        if (!el) return;
+        if (state.template === t) el.classList.add('template-selected');
+        else el.classList.remove('template-selected');
+        // синхронизируем toggles
+        document.querySelectorAll('[data-template]').forEach(btn => {
+          if (btn.getAttribute('data-template') === t) {
+            btn.style.background = state.template === t ? 'rgba(37,99,235,.1)' : '';
+          }
+        });
       });
-      document.body.classList.remove('template-variant-classic','template-variant-minimal','template-variant-showcase');
-      if(state.template==='classic') document.body.classList.add('template-variant-classic');
-      if(state.template==='minimal') document.body.classList.add('template-variant-minimal');
-      if(state.template==='showcase') document.body.classList.add('template-variant-showcase');
     }
 
-    function updateShareLink(){
-      const s = LZString.compressToEncodedURIComponent(JSON.stringify(state));
-      const url = `${location.origin}${location.pathname}#s=${s}`;
+    function updateShareLink() {
+      const serialized = LZString.compressToEncodedURIComponent(JSON.stringify(state));
+      const url = `${location.origin}${location.pathname}#s=${serialized}`;
       shareLinkInput.value = url;
     }
 
-    function copyLink(){
+    function copyLink() {
       shareLinkInput.select();
-      shareLinkInput.setSelectionRange(0,99999);
-      navigator.clipboard.writeText(shareLinkInput.value).then(()=>alert('Ссылка скопирована'));
+      shareLinkInput.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+        alert('Ссылка скопирована');
+      });
     }
 
-    function createDraft(){
+    function createDraft() {
+      // просто фокус на редактирование, уже создано
       updateShareLink();
       titleEl.focus();
       window.scrollTo({ top: 300, behavior: 'smooth' });
     }
 
-    function scrollToGallery(){
-      document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
+    function scrollToGallery() {
+      document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function downloadStatic(){
+    function applyAnimationSettings() {
+      const cb = document.getElementById('toggleAnimation');
+      state.animations = cb.checked;
+      pushHistory();
+      updateShareLink();
+    }
+
+    function downloadStatic() {
       applyFromDOM();
-      const html = generateStaticHTML();
-      const blob = new Blob([html], { type: 'text/html' });
+      const snapshotHTML = generateStaticHTML();
+      const blob = new Blob([snapshotHTML], { type: 'text/html' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'portfolio.html';
       a.click();
     }
 
-    function generateStaticHTML(){
-      const safe = s=> (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-      const title = safe(state.content.title);
-      const subtitle = safe(state.content.subtitle);
-      const about = safe(state.content.about);
-      const email = safe(state.content.contacts.email);
-      const github = safe(state.content.contacts.github);
-      const website = safe(state.content.contacts.website);
-      const seoTitle = safe(state.content.seo.title || title + ' — портфолио');
-      const seoDesc = safe(state.content.seo.description || subtitle);
-      const accent = state.colors.primary;
-      const cardBg = state.colors.card;
-      const textColor = state.colors.text;
-      const projectsHTML = state.content.projects.map(p=>{
-        const name = safe(p.name);
-        const desc = safe(p.desc);
-        const link = safe(p.link);
-        const imgTag = p.image ? `<div style="margin-top:8px;"><img src="${p.image}" alt="${name}" style="border-radius:6px;max-width:100%;"></div>` : '';
-        const linkHtml = link ? `<div style="margin-top:4px;"><a href="${link}" target="_blank">${link}</a></div>` : '';
-        return `
-          <div style="background:${cardBg};border-radius:8px;padding:14px;margin-bottom:14px;box-shadow:0 25px 50px -10px rgba(31,45,58,.08);">
-            <div style="font-weight:600;font-size:1rem;">${name}</div>
-            <div style="margin-top:6px;color:#555;">${desc}</div>
-            ${imgTag}
-            ${linkHtml}
-          </div>
-        `;
-      }).join('');
+    function generateStaticHTML() {
+      // Собираем текущее содержимое в чистый HTML (без редакторских рамок)
+      const safeTitle = escapeHtml(state.content.title);
+      const safeSubtitle = escapeHtml(state.content.subtitle);
+      const safeAbout = escapeHtml(state.content.about);
+      const projectsHTML = state.content.projects.map(p => `
+        <div style="background:#fff;border-radius:8px;padding:14px;margin-bottom:12px;box-shadow:0 20px 40px -10px rgba(31,45,58,.08);">
+          <div style="font-weight:600;font-size:1rem;">${escapeHtml(p.name)}</div>
+          <div style="margin-top:4px;color:#555;">${escapeHtml(p.desc)}</div>
+        </div>
+      `).join('');
+      const contactsHTML = `
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <div style="flex:1;min-width:120px;">Email: ${escapeHtml(state.content.contacts.email || 'example@mail.com')}</div>
+          <div style="flex:1;min-width:120px;">GitHub: ${escapeHtml(state.content.contacts.github || 'github.com/username')}</div>
+        </div>
+      `;
+      const accent = state.theme.accent;
+      const font = state.theme.font;
+      const seoTitle = escapeHtml(state.content.seo.title || safeTitle + ' — портфолио');
+      const seoDesc = escapeHtml(state.content.seo.description || safeSubtitle || 'Портфолио без регистрации');
       return `
 <!DOCTYPE html>
 <html lang="ru">
@@ -917,143 +1082,80 @@
   <title>${seoTitle}</title>
   <meta name="description" content="${seoDesc}" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta property="og:title" content="${seoTitle}" />
+  <meta property="og:description" content="${seoDesc}" />
   <style>
-    :root{
-      --primary:${accent};
-      --card-bg:${cardBg};
-      --text:${textColor};
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+    :root {
+      --primary: ${accent};
+      font-family: ${font};
+      color:#1f2d3a;
       background:#f5f7fa;
-      color: var(--text);
     }
     *{box-sizing:border-box;}
-    body{margin:0;padding:0;}
+    body{margin:0;padding:0;background: #f5f7fa;font-family:inherit;}
     .container{max-width:900px;margin:0 auto;padding:40px 16px;}
     h1{margin:0;font-size:2.2rem;font-weight:700;}
+    h2{margin:0;font-size:1.1rem;font-weight:600;color:#555;}
+    .card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 30px 60px -10px rgba(31,45,58,.08);margin-bottom:16px;}
+    .badge{background:var(--primary);color:#fff;padding:6px 14px;border-radius:999px;font-size:.65rem;display:inline-block;margin-bottom:8px;}
     .small{font-size:.9rem;color:#555;margin-top:6px;}
-    .card{background:var(--card-bg);border-radius:10px;padding:16px;box-shadow:0 30px 60px -10px rgba(31,45,58,.08);margin-bottom:16px;}
-    a{color:var(--primary);text-decoration:none;}
     .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:8px;}
-    .badge{background:var(--primary);color:#fff;padding:6px 14px;border-radius:999px;font-size:.8rem;display:inline-block;margin-bottom:8px;font-weight:600;}
-    body{background:#fff;}
   </style>
 </head>
 <body>
   <div class="container">
-    <div style="margin-bottom:16px;">
-      <div style="font-size:.85rem;color:#777;">Портфолио</div>
-      <h1>${title}</h1>
-      <div style="margin-top:4px;font-size:1rem;color:#555;">${subtitle}</div>
-    </div>
-    <div class="card">
-      <div class="badge">О себе</div>
-      <div class="small">${about}</div>
-    </div>
-    <div class="card">
-      <div class="badge">Проекты</div>
-      <div class="projects">
-        ${projectsHTML}
+    <div>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:.85rem;color:#777;">Портфолио</div>
+        <h1>${safeTitle}</h1>
+        <div style="margin-top:4px;font-size:1rem;color:#555;">${safeSubtitle}</div>
       </div>
+      <div class="card">
+        <div class="badge">О себе</div>
+        <div class="small">${safeAbout}</div>
+      </div>
+      <div class="card">
+        <div class="badge">Проекты</div>
+        <div class="projects">
+          ${projectsHTML}
+        </div>
+      </div>
+      <div class="card">
+        <div class="badge">Контакты</div>
+        ${contactsHTML}
+      </div>
+      <div style="margin-top:40px;font-size:.8rem;color:#888;text-align:center;">Сгенерировано с помощью InstantPortfolio. Без регистрации.</div>
     </div>
-    <div class="card">
-      <div class="badge">Контакты</div>
-      <div class="small">Email: ${email}</div>
-      <div class="small">GitHub: ${github}</div>
-      <div class="small">Website: ${website}</div>
-    </div>
-    <div style="margin-top:40px;font-size:.8rem;color:#888;text-align:center;">Сгенерировано с помощью InstantPortfolio. Без регистрации.</div>
   </div>
 </body>
-</html>`;
-    }
-
-    function escapeHTML(str){ return (str||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-    function filterTemplates(type){
-      document.querySelectorAll('.template-filter button').forEach(b=>b.classList.remove('active'));
-      document.querySelector(`.template-filter button[data-filter="${type}"]`)?.classList.add('active');
-      document.querySelectorAll('#templates .template-card').forEach(card=>{
-        if(type==='all') card.style.display='flex';
-        else card.style.display = card.getAttribute('data-type')===type ? 'flex' : 'none';
-      });
-    }
-
-    function addSection(){
-      const key = prompt('Название новой секции (уникальное)')?.trim();
-      if(!key) return;
-      if(document.querySelector(`.section[data-key="${key}"]`)){
-        alert('Секция уже есть');
-        return;
-      }
-      const wrapper = document.getElementById('sectionsWrapper');
-      const newSection = document.createElement('div');
-      newSection.className='section';
-      newSection.setAttribute('data-key', key);
-      newSection.innerHTML=`
-        <div class="section-header">
-          <div>
-            <div style="font-weight:600;">${key}</div>
-            <div class="small">Новая секция</div>
-          </div>
-          <div class="section-controls" style="display:flex;gap:6px;">
-            <button class="btn-secondary" onclick="removeSection('${key}')">Удалить</button>
-            <button class="btn-secondary" onclick="duplicateSection('${key}')">Дублировать</button>
-          </div>
-        </div>
-        <div contenteditable="true" class="inline-edit" style="padding:12px;border:1px solid #d4d9e2;border-radius:8px;">Содержимое секции ${key}</div>
+</html>
       `;
-      wrapper.appendChild(newSection);
-      newSection.querySelectorAll('[contenteditable]').forEach(el=>{
-        el.addEventListener('input', scheduleSave);
-        el.addEventListener('blur', applyFromDOM);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+    }
+
+    // навигация фильтров
+    function filterTemplates(type) {
+      document.querySelectorAll('.template-filter button').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.template-filter button[data-filter="${type}"]`)?.classList.add('active');
+      document.querySelectorAll('#templates .template-card').forEach(card => {
+        if (type === 'all') {
+          card.style.display='block';
+        } else {
+          card.style.display = card.getAttribute('data-type') === type ? 'block' : 'none';
+        }
       });
-      scheduleSave();
     }
 
-    function removeSection(key){
-      if(!confirm('Удалить секцию?')) return;
-      const el = document.querySelector(`.section[data-key="${key}"]`);
-      if(el) el.remove();
-      scheduleSave();
-    }
-
-    function duplicateSection(key){
-      const src = document.querySelector(`.section[data-key="${key}"]`);
-      if(!src) return;
-      const clone = src.cloneNode(true);
-      const newKey = key + '_copy_' + Math.floor(Math.random()*100);
-      clone.setAttribute('data-key', newKey);
-      const titleElem = clone.querySelector('[style*="font-weight:600;"]');
-      if(titleElem) titleElem.textContent = newKey;
-      document.getElementById('sectionsWrapper').appendChild(clone);
-      clone.querySelectorAll('[contenteditable]').forEach(el=>{
-        el.addEventListener('input', scheduleSave);
-        el.addEventListener('blur', applyFromDOM);
-      });
-      scheduleSave();
-    }
-
-    function setPreview(viewer){
-      if(viewer){
-        document.querySelectorAll('.inline-edit').forEach(e=> e.setAttribute('contenteditable','false'));
-        document.querySelectorAll('.section-controls').forEach(c=> c.style.display='none');
-        editModeBtn.classList.remove('active');
-        viewModeBtn.classList.add('active');
-      } else {
-        document.querySelectorAll('.inline-edit').forEach(e=> e.setAttribute('contenteditable','true'));
-        document.querySelectorAll('.section-controls').forEach(c=> c.style.display='flex');
-        editModeBtn.classList.add('active');
-        viewModeBtn.classList.remove('active');
-      }
-    }
-
+    // Попытка загрузки из URL при старте
     window.addEventListener('load', init);
-    window.addEventListener('hashchange', ()=>{
-      loadState();
+    window.addEventListener('hashchange', () => {
+      loadFromURLOrLocal();
       render();
-      updateShareLink();
     });
+
   </script>
 </body>
 </html>
-
